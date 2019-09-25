@@ -1,0 +1,35 @@
+{
+  "@gfi-centre-ouest/generator-docker-devbox": {
+    "promptValues": {
+      "projectName": "directus",
+      "authorName": "Rémi Alvergnat",
+      "authorEmail": "remi.alvergnat@gfi.fr",
+      "features~0": [
+        "php-fpm-apache",
+        "postgresql",
+        "mysql",
+        "node"
+      ],
+      "features~0~php-fpm-apache~phpVersion": "7.3",
+      "features~0~php-fpm-apache~apacheVersion": "2.4.41",
+      "features~0~php-fpm-apache~phpExtensions": [
+        "xdebug",
+        "gd"
+      ],
+      "features~0~php-fpm-apache~phpTools": [
+        "composer"
+      ],
+      "features~0~php-fpm-apache~apacheExtensions": [
+        "rewrite"
+      ],
+      "features~0~postgresql~postgresVersion": "11.5",
+      "features~0~mysql~mysqlVersion": "8.0",
+      "features~0~node~nodeVersion": "10",
+      "features~0~node~nodeTools": [],
+      "features~0~more": false,
+      "features~1~php-fpm-apache~nativeClientPostgreSQL": null,
+      "features~1~php-fpm-apache~nativeClientMySQL": null,
+      "portPrefix": 468
+    }
+  }
+}

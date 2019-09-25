@@ -1,0 +1,41 @@
+version: '2.2'
+services:
+  php:
+    environment:
+      - 'XDEBUG_CONFIG=idekey=directus remote_host=${HOST_IP}'
+      - 'PHP_IDE_CONFIG=serverName=directus'
+  web:
+    networks:
+      - default
+      - reverse-proxy
+    labels:
+      - traefik.enable=true
+      - 'traefik.frontend.rule=Host:api.mysql.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN},api.pgsql.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN},admin.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN}'
+      - traefik.port=80
+    environment:
+      - 'VIRTUAL_HOST=api.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN},admin.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN}'
+      - VIRTUAL_PORT=80
+  app:
+    image: directus/app:v7-node
+    networks:
+      - default
+      - reverse-proxy
+    labels:
+      - traefik.enable=true
+      - 'traefik.frontend.rule=Host:app.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN}'
+      - traefik.port=80
+    environment:
+      - 'VIRTUAL_HOST=app.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN}'
+      - VIRTUAL_PORT=80
+      - 'DIRECTUS_APP_TITLE=Directus POC'
+      - 'DIRECTUS_APP_URL=https://api.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN}/_/'
+  db:
+    ports:
+      - '${DOCKER_DEVBOX_PORT_PREFIX}32:5432'
+  db2:
+    ports:
+      - '${DOCKER_DEVBOX_PORT_PREFIX}06:3306'
+networks:
+  reverse-proxy:
+    name: '${DOCKER_DEVBOX_REVERSE_PROXY_NETWORK}'
+    external: true
